@@ -89,6 +89,25 @@ function page() {
                 <Button className='w-full' type="submit">Sign In</Button>
             </form>
          </Form>
+           {/* Divider */}
+      <div className="relative my-4">
+        <div className="absolute inset-0 flex items-center">
+          <div className="w-full border-t border-gray-300" />
+        </div>
+        <div className="relative flex justify-center text-sm">
+          <span className="bg-white px-2 text-gray-500">or</span>
+        </div>
+      </div>
+
+      {/* Google Sign In */}
+      <Button
+        variant="outline"
+        className="w-full flex items-center justify-center gap-2"
+        onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+      >
+        <img src="/google.svg" alt="Google" className="h-5 w-5" />
+        Continue with Google
+      </Button>
            <div className="text-center mt-4">
           <p>
            Not a member yet?{' '}

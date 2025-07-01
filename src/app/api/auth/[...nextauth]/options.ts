@@ -1,5 +1,6 @@
 import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
 import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/dbConnect';
 import UserModel from '@/model/User';
@@ -42,17 +43,60 @@ export const authOptions: NextAuthOptions = {
         }
       },
     }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+    })
   ],
   callbacks: {
-    async jwt({ token, user }) {
-      if (user) {
-        token._id = user._id?.toString(); // Convert ObjectId to string
-        token.isVerified = user.isVerified;
-        token.isAcceptingMessages = user.isAcceptingMessages;
-        token.username = user.username;
-      }
-      return token;
-    },
+    /* When is this run? Every time a JWT is created/updated (i.e., on sign-in or session fetch).
+
+What it does:
+
+When the user is present (usually at sign-in), custom user fields (_id, isVerified, etc.) are stored in the token.
+
+This allows you to persist extra user data inside the token.
+
+*/
+ 
+async jwt({ token, user, account, profile }) {
+  if (account?.provider === 'google') {
+    await dbConnect();
+
+    let dbUser = await UserModel.findOne({ email: user.email });
+
+    if (!dbUser) {
+      dbUser = await UserModel.create({
+        email: user.email,
+        username: user.name || (user.email ? user.email.split('@')[0] : ''),
+        isVerified: true,
+        password: 'GOOGLE_OAUTH',
+      });
+    }
+
+    token._id = (dbUser._id as { toString: () => string }).toString();
+    token.isVerified = dbUser.isVerified;
+    token.isAcceptingMessages = dbUser.isAcceptingMessages;
+    token.username = dbUser.username;
+  } else if (user) {
+    token._id = user._id?.toString?.();
+    token.isVerified = user.isVerified;
+    token.isAcceptingMessages = user.isAcceptingMessages;
+    token.username = user.username;
+  }
+
+  return token;
+},
+
+    /* When is this run? Every time useSession() is called or an API hits the /api/auth/session endpoint.
+
+What it does:
+
+Takes the custom data from the token and injects it into the session.user object.
+
+This makes _id, isVerified, username, etc., accessible on the client side (session.user in React).
+
+*/
     async session({ session, token }) {
       if (token) {
         session.user._id = token._id as string | undefined;

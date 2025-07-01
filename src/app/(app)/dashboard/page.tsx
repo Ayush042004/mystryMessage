@@ -10,9 +10,8 @@ import { ApiResponse } from "@/types/ApiResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios, { AxiosError } from "axios";
 import { Loader2, RefreshCcw } from "lucide-react";
-import { set } from "mongoose";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
+import { useEffect, useState,useCallback } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
@@ -34,7 +33,7 @@ const page = () => {
     const {register,watch,setValue} = form;
     const acceptMessages = watch('acceptMessages');
 
-    const fetchAcceptMessages = async() => {
+    const fetchAcceptMessages = useCallback( async() => {
        setIsSwitchLoading(true);
        try {
        const response = await axios.get<ApiResponse>('/api/accept-messages');
@@ -45,9 +44,9 @@ const page = () => {
        } finally{
         setIsSwitchLoading(false);
        }
-    }
+    },[setValue, toast])
 
-    const fetchMessages = async(refresh: boolean = false) => {
+    const fetchMessages = useCallback(async(refresh: boolean = false) => {
         setIsLoading(true);
         setIsSwitchLoading(false);
         try {
@@ -64,7 +63,7 @@ const page = () => {
             setIsLoading(false);
             setIsSwitchLoading(false);
         }
-    }
+    },[setIsLoading,setMessages,toast])
 
     useEffect(()=> {
         if(!session||!session.user) return;

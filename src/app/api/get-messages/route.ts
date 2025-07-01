@@ -1,10 +1,10 @@
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth";//This function gets the current logged-in user session on the server side (like in API routes or server components).
 import { authOptions } from "../auth/[...nextauth]/options";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import { User } from "next-auth";
 import mongoose from "mongoose";
-
+//this routes needs to know currectly signed in user 
 export async function GET(request: Request){
     await dbConnect();
 
@@ -50,3 +50,13 @@ export async function GET(request: Request){
   }
 
 }
+
+
+
+
+
+
+
+
+
+  
