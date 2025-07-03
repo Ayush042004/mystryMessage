@@ -84,6 +84,7 @@ const page = () => {
     }
   };
 
+  
     if (!session || !session.user) {
     return <div></div>;
   }

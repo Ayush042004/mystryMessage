@@ -16,7 +16,9 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
-import { Button } from './ui/button';
+import { Textarea } from '@/components/ui/textarea';
+
+import { Button } from '@/components/ui/button';
 import { ApiResponse } from '@/types/ApiResponse';
 import toast from 'react-hot-toast';
 
@@ -26,6 +28,27 @@ type MessageCardProps = {
 };
 
 export function MessageCard({message,onMessageDelete}: MessageCardProps) {
+  const [replyText,setReplyText] = useState("");
+  const [isReplying, setIsReplying] = useState(false);
+
+  const handleReply = async () => {
+    if(!replyText.trim()) return;
+    
+    setIsReplying(true);
+    try {
+      const response = await axios.post<ApiResponse>(`/api/reply-message/${message._id}`, 
+        {reply: replyText }
+      );
+      toast.success(response.data.message);
+      message.reply = replyText;
+      setReplyText('');
+    } catch (error) {
+        const axiosError = error as AxiosError<ApiResponse>;
+         toast.error(axiosError.response?.data.message || 'Error sending reply');
+    } finally {
+      setIsReplying(false);
+    }
+  }
 
     const handleDeleteConfirm = async () => {
         try {
@@ -75,7 +98,19 @@ export function MessageCard({message,onMessageDelete}: MessageCardProps) {
           </AlertDialog>
         </div>     
          </CardHeader>
-      <CardContent></CardContent>
+      <CardContent>
+        {message.reply ? ( 
+          <div className='text-green-700'>Reply: {message.reply}</div>
+        ) : (
+          <div className='flex gap-2 mt-2'>
+            <Textarea placeholder='Write a reply...' value={replyText} onChange={(e) => setReplyText(e.target.value)}/>
+            <Button onClick={handleReply} disabled={isReplying}>
+              {isReplying ? 'Replying...' : 'Reply'}
+
+            </Button>
+          </div>
+        )}
+      </CardContent>
     </Card>
     )
 
