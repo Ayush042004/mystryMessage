@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios, { AxiosError } from 'axios';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -24,6 +24,7 @@ import { ApiResponse } from '@/types/ApiResponse';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { messageSchema } from '@/schemas/messageSchema';
+import { Message } from '@/model/User';
 
 
 const parseStringMessages = (messageString: string): string[] => {
@@ -58,6 +59,7 @@ export default function SendMessage() {
   };
 
   const [isLoading, setIsLoading] = useState(false);
+  const [repliedMessages, setRepliedMessages] = useState<Message[]>([]);
 
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     setIsLoading(true);
@@ -85,6 +87,19 @@ export default function SendMessage() {
       // Handle error appropriately
     }
   };
+
+useEffect(() => {
+  const fetchRepliedMessages = async () => {
+    try {
+      const response = await axios.get<ApiResponse>(`/api/get-reply/${username}`);
+      setRepliedMessages(response.data.messages || []);
+    } catch (error) {
+      toast("Error loading replies or replies already loaded")
+      console.error('Error loading replies');
+    }
+  };
+  if(username) fetchRepliedMessages();
+}, [username]);
 
   return (
     <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
@@ -155,6 +170,7 @@ export default function SendMessage() {
                 </Button>
               ))
             )}
+            
           </CardContent>
         </Card>
       </div>
@@ -164,6 +180,22 @@ export default function SendMessage() {
         <Link href={'/sign-up'}>
           <Button>Create Your Account</Button>
         </Link>
+      </div>
+      //reply section 
+    <div className="mt-12">
+        <h2 className="text-2xl font-semibold mb-4 text-center">Replies from @{username}</h2>
+        {repliedMessages.length > 0 ? (
+          <div className="grid gap-4">
+            {repliedMessages.map((message) => (
+              <Card key={(message as { _id: string })._id}>
+                <CardHeader className="font-medium">{message.content}</CardHeader>
+                <CardContent className="text-green-700">Reply: {message.reply}</CardContent>
+              </Card>
+            ))}
+          </div>
+        ) : (
+          <p className="text-center text-gray-500">No replies yet.</p>
+        )}
       </div>
     </div>
   );
