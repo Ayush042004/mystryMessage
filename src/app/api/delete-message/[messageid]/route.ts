@@ -5,6 +5,7 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 import { Message } from "@/model/User";
 import { NextRequest } from "next/server";
 import { User } from "next-auth";
+import mongoose from "mongoose";
 
 export async function DELETE(request: NextRequest,{params}:{params: {messageid: string}}){
 
@@ -20,9 +21,11 @@ export async function DELETE(request: NextRequest,{params}:{params: {messageid: 
     }
 
     try {
-        const updateResult = await UserModel.updateOne( // MongoDB uses _id by default.            {_id: user._id},
-            {$pull: {messages : {_id: messageId}}}
-        );
+        const messageObjectId = new mongoose.Types.ObjectId(messageId);
+    const updateResult = await UserModel.updateOne(
+  { _id: user._id },
+  { $pull: { messages: { _id: messageObjectId } } }
+);
 
         if(updateResult.modifiedCount === 0) {
           return Response.json({

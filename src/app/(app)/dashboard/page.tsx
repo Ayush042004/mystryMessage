@@ -57,8 +57,10 @@ const page = () => {
             }
         } catch (error) {
             const axiosError = error as AxiosError<ApiResponse>;
-            toast(axiosError.response?.data.message || 'An error occurred while fetching messages');
-
+              const errMsg = axiosError.response?.data.message;
+           if (axiosError.response?.status !== 404 || errMsg !== 'User not found') {
+    toast(errMsg || 'An error occurred while fetching messages');
+  }
         } finally {
             setIsLoading(false);
             setIsSwitchLoading(false);
