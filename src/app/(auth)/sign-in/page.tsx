@@ -11,7 +11,7 @@ import { ApiResponse } from '@/types/ApiResponse'
 import { Form, FormControl,FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Loader2 } from 'lucide-react'
+import { Loader2, ArrowLeft } from 'lucide-react'
 import { signIn } from 'next-auth/react'
 
 
@@ -50,11 +50,20 @@ function page() {
 
 
   return (
-    <div className='flex justify-center items-center min-h-screen bg-gray-100'>
-        <div className='w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-md '>
-            <div className='text-center'>
-                <h1 className='text-4xl font-extrabold tracking-tight lg:text-5xl mb-6'> welcome Back to true Feedback </h1>
-                <p className='mb-4'>Sign in to continue your secret conversations</p>
+    <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800 flex items-center justify-center p-4'>
+        <div className='w-full max-w-md'>
+          {/* Back Button */}
+          <Link href="/" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors group">
+            <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
+            Back to Home
+          </Link>
+          
+          <div className='bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-2xl shadow-xl border border-gray-200 dark:border-gray-700 animate-scale-in'>
+            <div className='text-center mb-8'>
+                <h1 className='text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4'>
+                  Welcome Back
+                </h1>
+                <p className='text-gray-600 dark:text-gray-400'>Sign in to continue your secret conversations</p>
             </div>
          <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
@@ -62,10 +71,14 @@ function page() {
                  control={form.control}
                  name="identifier"
                  render={({field}) => (
-                    <FormItem>
-                        <FormLabel>Email/Username</FormLabel>
+                    <FormItem className="animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+                        <FormLabel className="text-gray-700 dark:text-gray-300">Email/Username</FormLabel>
                         <FormControl>
-                            <Input  {...field}/> 
+                            <Input 
+                              {...field}
+                              className="h-12 bg-white/50 dark:bg-gray-700/50 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400 transition-all duration-300"
+                              placeholder="Enter your email or username"
+                            /> 
                         </FormControl>
                         <FormMessage/>
                     </FormItem>
@@ -76,45 +89,58 @@ function page() {
                  control={form.control}
                  name="password"
                  render={({field}) => (
-                    <FormItem>
-                        <FormLabel>Password</FormLabel>
+                    <FormItem className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+                        <FormLabel className="text-gray-700 dark:text-gray-300">Password</FormLabel>
                         <FormControl>
-                            <Input type="password" {...field}/>
+                            <Input 
+                              type="password" 
+                              {...field}
+                              className="h-12 bg-white/50 dark:bg-gray-700/50 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400 transition-all duration-300"
+                              placeholder="Enter your password"
+                            />
                         </FormControl>
                         <FormMessage/>
                     </FormItem>
                  )}
                />
 
-                <Button className='w-full' type="submit">Sign In</Button>
+                <Button 
+                  className='w-full h-12 bg-black hover:bg-gray-800 text-white rounded-xl transition-all duration-300 hover-lift animate-fade-in-up' 
+                  type="submit"
+                  style={{ animationDelay: '0.3s' }}
+                >
+                  Sign In
+                </Button>
             </form>
          </Form>
            {/* Divider */}
-      <div className="relative my-4">
+      <div className="relative my-6 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-300" />
+          <div className="w-full border-t border-gray-300 dark:border-gray-600" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="bg-white px-2 text-gray-500">or</span>
+          <span className="bg-white dark:bg-gray-800 px-4 text-gray-500 dark:text-gray-400">or</span>
         </div>
       </div>
 
       {/* Google Sign In */}
       <Button
         variant="outline"
-        className="w-full flex items-center justify-center gap-2"
+        className="w-full h-12 flex items-center justify-center gap-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 hover-lift animate-fade-in-up"
         onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+        style={{ animationDelay: '0.5s' }}
       >
         <img src="/google.svg" alt="Google" className="h-5 w-5" />
         Continue with Google
       </Button>
-           <div className="text-center mt-4">
-          <p>
+           <div className="text-center mt-6 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+          <p className="text-gray-600 dark:text-gray-400">
            Not a member yet?{' '}
-            <Link href="/sign-up" className="text-blue-600 hover:text-blue-800">
+            <Link href="/sign-up" className="text-black dark:text-white hover:underline font-medium transition-colors">
               Sign up
             </Link>
           </p>
+        </div>
         </div>
         </div>
     </div>
