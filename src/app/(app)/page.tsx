@@ -19,11 +19,11 @@ import {
 export default function Home() {
   return (
     <>
-      {/* Hero Section */}
-      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800 min-h-screen">
+ 
+      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 bg-gradient-to-br from-gray-500 via-white to-gray-800 dark:from-gray-900 dark:via-black dark:to-gray-800 min-h-screen">
         <section className="text-center mb-12 md:mb-16 animate-fade-in-up">
           <div className="mb-6">
-            <span className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-medium mb-6 animate-scale-in">
+            <span className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-medium mb-6 animate-scale-in border-4 border-gray-400">
               <Shield className="w-4 h-4 mr-2" />
               100% Anonymous & Secure
             </span>
@@ -50,7 +50,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Features Section */}
+    
         <section className="mb-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div className="text-center p-6 rounded-2xl bg-white/50 dark:bg-gray-800/50 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover-lift">
@@ -71,7 +71,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Carousel Section */}
+        
         <section className="animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
           <div className="text-center mb-8">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-4">
@@ -113,7 +113,7 @@ export default function Home() {
         </section>
       </main>
 
-      {/* Footer */}
+
       <footer className="bg-gray-900 dark:bg-black text-white border-t border-gray-800">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">

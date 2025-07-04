@@ -86,6 +86,7 @@ export default function SendMessage() {
         setRepliedMessages(response.data.messages || []);
       } catch (error) {
         console.error('Error loading replies');
+        toast("Error loading replies or replies already loaded ")
       }
     };
 
@@ -95,7 +96,7 @@ export default function SendMessage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800">
       <div className="container mx-auto px-4 py-12 max-w-4xl">
-        {/* Header */}
+     
         <div className="text-center mb-12 animate-fade-in-down">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Send Anonymous Message
@@ -108,7 +109,7 @@ export default function SendMessage() {
           </p>
         </div>
 
-        {/* Message Form */}
+      
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-200 dark:border-gray-700 mb-8 animate-fade-in-up hover-lift">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
@@ -159,7 +160,6 @@ export default function SendMessage() {
           </Form>
         </div>
 
-        {/* Suggestions */}
         <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-200 dark:border-gray-700 mb-8 animate-fade-in-up hover-lift" style={{ animationDelay: '0.1s' }}>
           <div className="flex items-center justify-between mb-6">
             <div>
@@ -218,7 +218,6 @@ export default function SendMessage() {
 
         <Separator className="my-8" />
 
-        {/* Call to Create Account */}
         <div className="text-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-8 rounded-2xl mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
             Want Your Own Message Board?
@@ -234,7 +233,7 @@ export default function SendMessage() {
           </Link>
         </div>
 
-        {/* Reply Section */}
+
         {repliedMessages.length > 0 && (
           <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">

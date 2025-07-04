@@ -52,7 +52,7 @@ function page() {
   return (
     <div className='min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800 flex items-center justify-center p-4'>
         <div className='w-full max-w-md'>
-          {/* Back Button */}
+         
           <Link href="/" className="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white mb-8 transition-colors group">
             <ArrowLeft className="w-4 h-4 mr-2 group-hover:-translate-x-1 transition-transform" />
             Back to Home
@@ -113,7 +113,7 @@ function page() {
                 </Button>
             </form>
          </Form>
-           {/* Divider */}
+          
       <div className="relative my-6 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-300 dark:border-gray-600" />
@@ -123,7 +123,7 @@ function page() {
         </div>
       </div>
 
-      {/* Google Sign In */}
+      
       <Button
         variant="outline"
         className="w-full h-12 flex items-center justify-center gap-3 rounded-xl border-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 hover-lift animate-fade-in-up"
