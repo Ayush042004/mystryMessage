@@ -20,7 +20,7 @@ Example format: "What's a hobby you've recently started?||If you could have dinn
 
 
     const result = await model.generateContent(prompt);
-    const response = await result.response;
+    const response =  result.response;
     const text = response.text();
 
     return new Response(text, {

@@ -8,7 +8,6 @@ import { Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { CardHeader, CardContent, Card } from '@/components/ui/card';
-import { useCompletion } from 'ai/react';
 import {
   Form,
   FormControl,
@@ -26,40 +25,24 @@ import { useParams } from 'next/navigation';
 import { messageSchema } from '@/schemas/messageSchema';
 import { Message } from '@/model/User';
 
-
-const parseStringMessages = (messageString: string): string[] => {
-  return messageString.split("||");
-};
-
-const initialMessageString =
-  "What's your favorite movie?||Do you have any pets?||What's your dream job?";
-
 export default function SendMessage() {
   const params = useParams<{ username: string }>();
   const username = params.username;
-
-  const {
-    complete,
-    completion,
-    isLoading: isSuggestLoading,
-    error,
-  } = useCompletion({
-    api: '/api/suggest-messages',
-    initialCompletion: initialMessageString,
-  });
 
   const form = useForm<z.infer<typeof messageSchema>>({
     resolver: zodResolver(messageSchema),
   });
 
   const messageContent = form.watch('content');
+  const [isLoading, setIsLoading] = useState(false);
+  const [repliedMessages, setRepliedMessages] = useState<Message[]>([]);
+  const [suggestions, setSuggestions] = useState<string[]>([]);
+  const [isSuggestLoading, setIsSuggestLoading] = useState(false);
+  const [suggestError, setSuggestError] = useState<string | null>(null);
 
   const handleMessageClick = (message: string) => {
     form.setValue('content', message);
   };
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [repliedMessages, setRepliedMessages] = useState<Message[]>([]);
 
   const onSubmit = async (data: z.infer<typeof messageSchema>) => {
     setIsLoading(true);
@@ -69,43 +52,52 @@ export default function SendMessage() {
         username,
       });
 
-      toast(response.data.message)
+      toast(response.data.message);
       form.reset({ ...form.getValues(), content: '' });
     } catch (error) {
       const axiosError = error as AxiosError<ApiResponse>;
-      toast(axiosError.response?.data.message ?? 'Failed to sent message',);
+      toast(axiosError.response?.data.message ?? 'Failed to send message');
     } finally {
       setIsLoading(false);
     }
   };
 
   const fetchSuggestedMessages = async () => {
+    setIsSuggestLoading(true);
+    setSuggestError(null);
     try {
-      complete('');
+      const response = await axios.post('/api/suggest-messages');
+      const text = response.data || response;
+      const parsed = text.split('||').map((q: string) => q.trim());
+      setSuggestions(parsed);
     } catch (error) {
-      console.error('Error fetching messages:', error);
-      // Handle error appropriately
+      console.error('Error fetching suggestions:', error);
+      setSuggestError('Failed to get suggested messages.');
+      toast.error('Error fetching suggestions');
+    } finally {
+      setIsSuggestLoading(false);
     }
   };
 
-useEffect(() => {
-  const fetchRepliedMessages = async () => {
-    try {
-      const response = await axios.get<ApiResponse>(`/api/get-reply/${username}`);
-      setRepliedMessages(response.data.messages || []);
-    } catch (error) {
-      toast("Error loading replies or replies already loaded")
-      console.error('Error loading replies');
-    }
-  };
-  if(username) fetchRepliedMessages();
-}, [username]);
+  useEffect(() => {
+    const fetchRepliedMessages = async () => {
+      try {
+        const response = await axios.get<ApiResponse>(`/api/get-reply/${username}`);
+        setRepliedMessages(response.data.messages || []);
+      } catch (error) {
+        toast('Error loading replies or replies already loaded');
+        console.error('Error loading replies');
+      }
+    };
+
+    if (username) fetchRepliedMessages();
+  }, [username]);
 
   return (
     <div className="container mx-auto my-8 p-6 bg-white rounded max-w-4xl">
-      <h1 className="text-4xl font-bold mb-6 text-center">
-        Public Profile Link
-      </h1>
+      <h1 className="text-4xl font-bold mb-6 text-center">Public Profile Link</h1>
+
+      {/* Message Form */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
@@ -140,6 +132,7 @@ useEffect(() => {
         </form>
       </Form>
 
+      {/* Suggestions */}
       <div className="space-y-4 my-8">
         <div className="space-y-2">
           <Button
@@ -156,10 +149,10 @@ useEffect(() => {
             <h3 className="text-xl font-semibold">Messages</h3>
           </CardHeader>
           <CardContent className="flex flex-col space-y-4">
-            {error ? (
-              <p className="text-red-500">{error.message}</p>
+            {suggestError ? (
+              <p className="text-red-500">{suggestError}</p>
             ) : (
-              parseStringMessages(completion).map((message, index) => (
+              suggestions.map((message, index) => (
                 <Button
                   key={index}
                   variant="outline"
@@ -170,26 +163,31 @@ useEffect(() => {
                 </Button>
               ))
             )}
-            
           </CardContent>
         </Card>
       </div>
+
       <Separator className="my-6" />
+
+      {/* Call to Create Account */}
       <div className="text-center">
         <div className="mb-4">Get Your Message Board</div>
         <Link href={'/sign-up'}>
           <Button>Create Your Account</Button>
         </Link>
       </div>
-      //reply section 
-    <div className="mt-12">
+
+      {/* Reply Section */}
+      <div className="mt-12">
         <h2 className="text-2xl font-semibold mb-4 text-center">Replies from @{username}</h2>
         {repliedMessages.length > 0 ? (
           <div className="grid gap-4">
             {repliedMessages.map((message) => (
               <Card key={(message as { _id: string })._id}>
                 <CardHeader className="font-medium">{message.content}</CardHeader>
-                <CardContent className="text-green-700">Reply: {message.reply}</CardContent>
+                <CardContent className="text-green-700">
+                  Reply: {message.reply}
+                </CardContent>
               </Card>
             ))}
           </div>
