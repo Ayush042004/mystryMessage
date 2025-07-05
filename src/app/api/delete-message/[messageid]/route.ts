@@ -6,10 +6,10 @@ import { User } from "next-auth";
 import mongoose from "mongoose";
 import { NextRequest } from "next/server";
 
-export async function DELETE(request:NextRequest , { params }: { params: { messageid: string } }){
+export async function DELETE(request:NextRequest , { params }: { params: Promise<{ messageid: string }> }){
 
     await dbConnect();
-    const messageId =  params.messageid;
+    const {messageid} = await params;
     const session = await getServerSession(authOptions);
     const user: User = session?.user as User;
     
@@ -20,7 +20,7 @@ export async function DELETE(request:NextRequest , { params }: { params: { messa
     }
 
     try {
-        const messageObjectId = new mongoose.Types.ObjectId(messageId);
+        const messageObjectId = new mongoose.Types.ObjectId(messageid);
     const updateResult = await UserModel.updateOne(
   { _id: user._id },
   { $pull: { messages: { _id: messageObjectId } } }
