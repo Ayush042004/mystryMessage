@@ -1,12 +1,12 @@
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import { NextRequest } from "next/server";
-import { Message } from "@/model/User";
 
 
-export async function GET( request:NextRequest, {params} : {params: {username: string}}) {
+
+export async function GET(request:NextRequest, context: { params: { username: string } }) {
     await dbConnect();
-    const username = params.username;
+    const username = context.params.username;
 
     try {
         const user = await UserModel.findOne({username}).select("messages").lean()
@@ -21,6 +21,6 @@ export async function GET( request:NextRequest, {params} : {params: {username: s
         messages: RepliedMessages,
     })
     } catch (error) {
-        return Response.json({ success: false, message: "Server error" }, { status: 500 });
+        return Response.json({ success: false, message: error }, { status: 500 });
     }
 }

@@ -3,7 +3,6 @@ import dbConnect from "@/lib/dbConnect";
 import { getServerSession } from "next-auth";
 import { User } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
-import { Message } from "@/model/User";
 import { NextRequest } from "next/server";
 
 export async function POST(request: NextRequest,{params}:{params:{messageid: string}}){

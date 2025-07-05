@@ -1,5 +1,5 @@
 'use client'
-import React, {useState } from 'react'
+import React from 'react'
 import toast from "react-hot-toast"
 import { useRouter } from 'next/navigation'
 import {zodResolver} from "@hookform/resolvers/zod"
@@ -7,15 +7,15 @@ import {useForm} from "react-hook-form";
 import * as z from "zod";
 import Link from "next/link"
 import { signInSchema } from '@/schemas/signInSchema'
-import { ApiResponse } from '@/types/ApiResponse'
 import { Form, FormControl,FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { Loader2, ArrowLeft } from 'lucide-react'
+import { ArrowLeft } from 'lucide-react'
 import { signIn } from 'next-auth/react'
+import Image from 'next/image'
 
 
-function page() {
+function Page() {
       const router = useRouter();
 
       const form = useForm<z.infer<typeof signInSchema>>({
@@ -130,7 +130,7 @@ function page() {
         onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
         style={{ animationDelay: '0.5s' }}
       >
-        <img src="/google.svg" alt="Google" className="h-5 w-5" />
+        <Image src="/google.svg"  alt="Google" width={20} height={20} />
         Continue with Google
       </Button>
            <div className="text-center mt-6 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
@@ -147,4 +147,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

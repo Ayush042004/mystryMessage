@@ -5,7 +5,7 @@ import UserModel from "@/model/User";
 import { User } from "next-auth";
 import mongoose from "mongoose";
 //this routes needs to know currectly signed in user 
-export async function GET(request: Request){
+export async function GET(){
     await dbConnect();
 
     const session = await getServerSession(authOptions);

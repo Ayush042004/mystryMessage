@@ -5,16 +5,29 @@ import bcrypt from 'bcryptjs';
 import dbConnect from '@/lib/dbConnect';
 import UserModel from '@/model/User';
 
+interface CustomUser {
+  _id?: string;
+  email: string;
+  username: string;
+  isVerified: boolean;
+  isAcceptingMessages?: boolean;
+  password?: string;
+}
+
+
 export const authOptions: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       id: 'credentials',
       name: 'Credentials',
       credentials: {
-        email: { label: 'Email', type: 'text' },
+        identifier: { label: 'Email', type: 'text' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials: any): Promise<any> {
+      async authorize(credentials): Promise<CustomUser | null> {
+          if (!credentials?.identifier || !credentials?.password) {
+          return null;
+        }
         await dbConnect();
         try {
           const user = await UserModel.findOne({
@@ -34,12 +47,19 @@ export const authOptions: NextAuthOptions = {
             user.password
           );
           if (isPasswordCorrect) {
-            return user;
+            return {
+              _id: (user._id as { toString: () => string }).toString(),
+              email: user.email,
+              username: user.username,
+              isVerified: user.isVerified,
+              isAcceptingMessages: user.isAcceptingMessages,
+            };
           } else {
             throw new Error('Incorrect password');
           }
-        } catch (err: any) {
-          throw new Error(err);
+        }catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'An error occurred';
+          throw new Error(errorMessage);
         }
       },
     }),
@@ -59,7 +79,7 @@ This allows you to persist extra user data inside the token.
 
 */
  
-async jwt({ token, user, account, profile }) {
+async jwt({ token, user, account }) {
   if (account?.provider === 'google') {
     await dbConnect();
 
@@ -67,8 +87,8 @@ async jwt({ token, user, account, profile }) {
 
     if (!dbUser) {
       dbUser = await UserModel.create({
-        email: user.email,
-        username: user.name || (user.email ? user.email.split('@')[0] : ''),
+        email: user?.email,
+        username: user?.name || (user.email ? user.email.split('@')[0] : ''),
         isVerified: true,
         password: 'GOOGLE_OAUTH',
       });
@@ -79,10 +99,11 @@ async jwt({ token, user, account, profile }) {
     token.isAcceptingMessages = dbUser.isAcceptingMessages;
     token.username = dbUser.username;
   } else if (user) {
-    token._id = user._id?.toString?.();
-    token.isVerified = user.isVerified;
-    token.isAcceptingMessages = user.isAcceptingMessages;
-    token.username = user.username;
+    const customUser = user as CustomUser;
+    token._id = customUser._id?.toString?.();
+    token.isVerified = customUser.isVerified;
+    token.isAcceptingMessages = customUser.isAcceptingMessages;
+    token.username = customUser.username;
   }
 
   return token;

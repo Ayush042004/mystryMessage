@@ -85,7 +85,7 @@ export default function SendMessage() {
         const response = await axios.get<ApiResponse>(`/api/get-reply/${username}`);
         setRepliedMessages(response.data.messages || []);
       } catch (error) {
-        console.error('Error loading replies');
+        console.error('Error loading replies', error);
         toast("Error loading replies or replies already loaded ")
       }
     };
@@ -210,7 +210,7 @@ export default function SendMessage() {
             <div className="text-center py-8">
               <Sparkles className="w-12 h-12 text-gray-400 dark:text-gray-600 mx-auto mb-3" />
               <p className="text-gray-500 dark:text-gray-400">
-                Click "Get Suggestions" to see message ideas
+                Click &quot;Get Suggestions&quot; to see message ideas
               </p>
             </div>
           )}
@@ -248,7 +248,7 @@ export default function SendMessage() {
                 >
                   <CardHeader className="pb-3">
                     <div className="text-gray-700 dark:text-gray-300 font-medium">
-                      "{message.content}"
+                     &quot;{message.content}&quot;
                     </div>
                   </CardHeader>
                   <CardContent>

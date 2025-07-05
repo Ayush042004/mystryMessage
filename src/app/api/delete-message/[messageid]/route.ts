@@ -2,12 +2,11 @@ import UserModel from "@/model/User";
 import { getServerSession } from "next-auth";
 import dbConnect from "@/lib/dbConnect";
 import { authOptions } from "../../auth/[...nextauth]/options";
-import { Message } from "@/model/User";
-import { NextRequest } from "next/server";
 import { User } from "next-auth";
 import mongoose from "mongoose";
-
-export async function DELETE(request: NextRequest,{params}:{params: {messageid: string}}){
+import { NextRequest } from "next/server";
+import { ApiResponse } from "@/types/ApiResponse";
+export async function DELETE(request:NextRequest , { params }: { params: { messageid: string } }){
 
     await dbConnect();
     const messageId =  params.messageid;

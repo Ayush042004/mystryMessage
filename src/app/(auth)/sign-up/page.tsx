@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button'
 import { Loader2, ArrowLeft, CheckCircle, XCircle } from 'lucide-react'
 
 
-function page() {
+function Page() {
       const [username,setUsername] = useState("")
       const [usernameMessage, setUsernameMessage] = useState("");
       const [isCheckingUsername, setIsCheckingUsername] = useState(false);
@@ -69,7 +69,7 @@ function page() {
                 console.error('Error during sign-up:', error);
                  const axiosError = error as AxiosError<ApiResponse>;
 
-                 let errorMessage = axiosError.response?.data.message;
+                 const errorMessage = axiosError.response?.data.message;
                
                 toast(errorMessage ?? 'There was a problem with your sign-up. Please try again.');
             } finally {
@@ -207,4 +207,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

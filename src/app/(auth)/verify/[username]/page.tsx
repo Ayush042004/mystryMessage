@@ -59,7 +59,7 @@ function VerifyAccount() {
               Verify Your Account
             </h1>
             <p className="text-gray-600 dark:text-gray-400 mb-2">
-              We've sent a verification code to your email
+              We&apos;ve sent a verification code to your email
             </p>
             <p className="text-sm text-gray-500 dark:text-gray-500">
               Please check your inbox and enter the 6-digit code below
@@ -95,7 +95,7 @@ function VerifyAccount() {
           
           <div className="text-center mt-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             <p className="text-sm text-gray-500 dark:text-gray-400">
-              Didn't receive the code?{' '}
+              Didn&apos;t receive the code?{' '}
               <button className="text-black dark:text-white hover:underline font-medium transition-colors">
                 Resend Code
               </button>

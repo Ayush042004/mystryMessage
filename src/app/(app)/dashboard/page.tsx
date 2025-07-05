@@ -15,7 +15,8 @@ import { useEffect, useState,useCallback } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 
-const page = () => {
+
+const Page = () => {
     const [messages,setMessages] = useState<Message[]>([]);
     const [isLoading,setIsLoading] = useState(false);
     const[isSwitchLoading,setIsSwitchLoading] = useState(false);
@@ -44,7 +45,7 @@ const page = () => {
        } finally{
         setIsSwitchLoading(false);
        }
-    },[setValue, toast])
+    },[setValue])
 
     const fetchMessages = useCallback(async(refresh: boolean = false) => {
         setIsLoading(true);
@@ -65,13 +66,13 @@ const page = () => {
             setIsLoading(false);
             setIsSwitchLoading(false);
         }
-    },[setIsLoading,setMessages,toast])
+    },[setIsLoading,setMessages])
 
     useEffect(()=> {
         if(!session||!session.user) return;
         fetchMessages();
         fetchAcceptMessages();
-    },[session,setValue,fetchAcceptMessages, fetchMessages,toast]);
+    },[session,setValue,fetchAcceptMessages, fetchMessages]);
 
   const handleSwitchChange = async () => {
     try {
@@ -236,4 +237,4 @@ const page = () => {
   );
 }
 
-export default page
+export default Page

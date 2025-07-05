@@ -7,7 +7,7 @@ export const maxDuration = 30;
 // Initialize OpenAI client
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!)
 
-export async function POST(req: Request) {
+export async function POST() {
   try {
     const prompt = `
 Create a list of three open-ended and engaging questions formatted as a single string. Each question should be separated by '||'. 
@@ -30,10 +30,10 @@ Example format: "What's a hobby you've recently started?||If you could have dinn
         'Connection': 'keep-alive',
       },
     });
-  } catch (error: any) {
+  } catch (error) {
     console.error('Gemini API Error:', error);
     return NextResponse.json(
-      { success: false, error: error?.message || 'Failed to generate suggestions' },
+      { success: false, error: (error as Error)?.message || 'Failed to generate suggestions' },
       { status: 500 }
     );
   }
