@@ -6,6 +6,7 @@ import dbConnect from '@/lib/dbConnect';
 import UserModel from '@/model/User';
 
 interface CustomUser {
+  id: string;
   _id?: string;
   email: string;
   username: string;
@@ -47,8 +48,10 @@ export const authOptions: NextAuthOptions = {
             user.password
           );
           if (isPasswordCorrect) {
+            const userId = user._id as string
             return {
-              _id: (user._id as { toString: () => string }).toString(),
+              id: userId,
+              _id: userId,
               email: user.email,
               username: user.username,
               isVerified: user.isVerified,

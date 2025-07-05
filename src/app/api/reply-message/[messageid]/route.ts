@@ -5,7 +5,7 @@ import { User } from "next-auth";
 import { authOptions } from "../../auth/[...nextauth]/options";
 import { NextRequest } from "next/server";
 
-export async function POST(request: NextRequest,{params}:{params:{messageid: string}}){
+export async function POST(request: NextRequest,{params}:{params: Promise<{messageid: string}>}){
   
     await dbConnect();
 
@@ -18,14 +18,14 @@ export async function POST(request: NextRequest,{params}:{params:{messageid: str
         }, {status: 401});
     }
 
-    const messageId = params.messageid;
+    const {messageid} = await params;
     const userid = user._id
     const {reply} = await request.json();
 
     try {
         const result = await UserModel.updateOne({
           _id: userid,
-          "messages._id": messageId
+          "messages._id": messageid
         },
     {
         $set: {

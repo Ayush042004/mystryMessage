@@ -4,9 +4,9 @@ import { NextRequest } from "next/server";
 
 
 
-export async function GET(request:NextRequest, context: { params: { username: string } }) {
+export async function GET(request:NextRequest, { params }: { params: Promise<{ username: string }> }) {
     await dbConnect();
-    const username = context.params.username;
+    const {username} =  await params;
 
     try {
         const user = await UserModel.findOne({username}).select("messages").lean()
