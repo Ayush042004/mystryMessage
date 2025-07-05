@@ -5,7 +5,7 @@ import { authOptions } from "../../auth/[...nextauth]/options";
 import { User } from "next-auth";
 import mongoose from "mongoose";
 import { NextRequest } from "next/server";
-import { ApiResponse } from "@/types/ApiResponse";
+
 export async function DELETE(request:NextRequest , { params }: { params: { messageid: string } }){
 
     await dbConnect();
