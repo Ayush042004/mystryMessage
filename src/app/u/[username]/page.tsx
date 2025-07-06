@@ -222,7 +222,7 @@ export default function SendMessage() {
               Public Replies from @{username}
             </h2>
             <div className="grid grid-cols-1 gap-4">
-              {repliedMessages.map((message, _) => (
+              {repliedMessages.map((message) => (
                 <Card
                   key={(message as { _id: string })._id}
                   className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover-lift"
