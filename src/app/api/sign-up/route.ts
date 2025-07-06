@@ -2,6 +2,7 @@ import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/User";
 import bcrypt from "bcryptjs";
 import { sendVerificationEmail } from "@/helpers/sendVerificationEmail";
+import { ApiResponse } from "@/types/ApiResponse";
 
 
 export async function POST(request: Request){
@@ -62,20 +63,29 @@ export async function POST(request: Request){
             await newUser.save();
         }
          
-         const emailResponse = await sendVerificationEmail(
-      email,
-      username,
-      verifyCode
-    );
-    if (!emailResponse.success) {
-      return Response.json(
-        {
-          success: false,
-          message: emailResponse.message,
-        },
-        { status: 500 }
-      );
-    }
+  let emailResponse;
+try {
+ emailResponse = await sendVerificationEmail(email, username, verifyCode);
+} catch (err) {
+  console.error("❌ Email sending failed:", err);
+  return Response.json(
+    {
+      success: false,
+      message: "Email sending failed. Try again later.",
+    },
+    { status: 500 }
+  );
+}
+
+if (!emailResponse.success) {
+  return Response.json(
+    {
+      success: false,
+      message: emailResponse.message,
+    },
+    { status: 500 }
+  );
+}
 
     return Response.json(
       {
@@ -88,7 +98,7 @@ export async function POST(request: Request){
     } catch (error) {
         console.error("Error registering user: ",error);
         return Response.json({
-            success: true,
+            success: false,
             message: "Error registeristing user",
         },
     {
