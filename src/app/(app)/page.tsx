@@ -33,7 +33,7 @@ export default function Home() {
             <span className="block gradient-text">Anonymous Feedback</span>
           </h1>
           <p className="mt-6 text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
-            True Feedback - Where your identity remains a secret and honest conversations flourish.
+           Mystry Message - Where your identity remains a secret and honest conversations flourish.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/sign-up">
@@ -81,35 +81,42 @@ export default function Home() {
               Real messages from our community
             </p>
           </div>
-          <Carousel
-            plugins={[Autoplay({ delay: 3000 })]}
-            className="w-full max-w-lg md:max-w-2xl mx-auto"
-          >
-            <CarouselContent>
-              {messages.map((message, index) => (
-                <CarouselItem key={index} className="p-4">
-                  <Card className="hover-lift transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-gray-200 dark:border-gray-700">
-                    <CardHeader className="pb-3">
-                      <CardTitle className="text-lg text-gray-900 dark:text-white">{message.title}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="flex flex-col md:flex-row items-start space-y-3 md:space-y-0 md:space-x-4">
-                      <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
-                        <Mail className="flex-shrink-0 w-5 h-5 text-gray-600 dark:text-gray-300" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-gray-700 dark:text-gray-300 mb-2">{message.content}</p>
-                        <p className="text-xs text-gray-500 dark:text-gray-400">
-                          {message.received}
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="hidden md:flex" />
-            <CarouselNext className="hidden md:flex" />
-          </Carousel>
+     <Carousel
+  plugins={[Autoplay({ delay: 3000 })]}
+  className="w-full max-w-xs sm:max-w-sm md:max-w-xl lg:max-w-2xl mx-auto"
+>
+  <CarouselContent>
+    {messages.map((message, index) => (
+      <CarouselItem key={index} className="px-3 py-4">
+        <Card className="hover-lift transition-all duration-300 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700">
+          <CardHeader className="pb-2 sm:pb-3">
+            <CardTitle className="text-base sm:text-lg text-gray-900 dark:text-white">
+              {message.title}
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex flex-col sm:flex-row items-start sm:space-x-4 space-y-3 sm:space-y-0">
+            <div className="p-2 rounded-lg bg-gray-100 dark:bg-gray-700">
+              <Mail className="w-5 h-5 text-gray-600 dark:text-gray-300" />
+            </div>
+            <div className="flex-1">
+              <p className="text-sm sm:text-base text-gray-700 dark:text-gray-300 mb-1 sm:mb-2">
+                {message.content}
+              </p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">
+                {message.received}
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </CarouselItem>
+    ))}
+  </CarouselContent>
+
+  {/* Navigation buttons (hidden on small screens) */}
+  <CarouselPrevious className="hidden sm:flex" />
+  <CarouselNext className="hidden sm:flex" />
+</Carousel>
+
         </section>
       </main>
 
@@ -117,10 +124,10 @@ export default function Home() {
       <footer className="bg-gray-900 dark:bg-black text-white border-t border-gray-800">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center">
-            <h3 className="text-xl font-bold mb-2">True Feedback</h3>
+            <h3 className="text-xl font-bold mb-2">Mystry Message</h3>
             <p className="text-gray-400 mb-4">Where honest conversations begin</p>
             <p className="text-sm text-gray-500">
-              © 2025 True Feedback. All rights reserved.
+              © 2025 All rights reserved.
             </p>
           </div>
         </div>

@@ -135,7 +135,7 @@ function Page() {
       </Button>
            <div className="text-center mt-6 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
           <p className="text-gray-600 dark:text-gray-400">
-           Not a member yet?{' '}
+           Not a verified member yet?{' '}
             <Link href="/sign-up" className="text-black dark:text-white hover:underline font-medium transition-colors">
               Sign up
             </Link>
