@@ -94,23 +94,21 @@ export default function SendMessage() {
   }, [username]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800">
-      <div className="container mx-auto px-4 py-12 max-w-4xl">
-     
-        <div className="text-center mb-12 animate-fade-in-down">
+    <div className="min-h-screen w-full overflow-x-hidden bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-black dark:to-gray-800">
+      <div className="w-full max-w-4xl px-4 sm:px-6 py-12 mx-auto">
+        <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Send Anonymous Message
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-400 mb-2">
             to <span className="font-semibold text-black dark:text-white">@{username}</span>
           </p>
-          <p className="text-gray-500 dark:text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400">
             Your identity will remain completely anonymous
           </p>
         </div>
 
-      
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-200 dark:border-gray-700 mb-8 animate-fade-in-up hover-lift">
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-gray-200 dark:border-gray-700 mb-8">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField
@@ -124,7 +122,7 @@ export default function SendMessage() {
                     <FormControl>
                       <Textarea
                         placeholder="Write your anonymous message here... Be kind and respectful!"
-                        className="min-h-32 bg-white/50 dark:bg-gray-700/50 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400 transition-all duration-300 resize-none"
+                        className="w-full min-h-32 bg-white/50 dark:bg-gray-700/50 border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-gray-500 dark:focus:ring-gray-400 transition-all duration-300 resize-none"
                         {...field}
                       />
                     </FormControl>
@@ -141,7 +139,7 @@ export default function SendMessage() {
                 <Button
                   type="submit"
                   disabled={isLoading || !messageContent?.trim()}
-                  className="h-12 px-8 bg-black hover:bg-gray-800 text-white rounded-xl transition-all duration-300 hover-lift flex items-center gap-2"
+                  className="w-full sm:w-auto h-12 px-6 bg-black hover:bg-gray-800 text-white rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
@@ -160,14 +158,15 @@ export default function SendMessage() {
           </Form>
         </div>
 
-        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-8 rounded-2xl border border-gray-200 dark:border-gray-700 mb-8 animate-fade-in-up hover-lift" style={{ animationDelay: '0.1s' }}>
-          <div className="flex items-center justify-between mb-6">
+        {/* Suggestions Box */}
+        <div className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-6 sm:p-8 rounded-2xl border border-gray-200 dark:border-gray-700 mb-8">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 gap-4">
             <div>
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
                 Need Inspiration?
               </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                Click on any suggestion below to use it as your message
+              <p className="text-gray-600 dark:text-gray-400 text-sm">
+                Tap on a suggestion to use it as your message.
               </p>
             </div>
             <Button
@@ -184,22 +183,21 @@ export default function SendMessage() {
               Get Suggestions
             </Button>
           </div>
-          
+
           {suggestError ? (
             <p className="text-red-500 dark:text-red-400 text-center py-4">{suggestError}</p>
           ) : suggestions.length > 0 ? (
-            <div className="grid gap-3">
+            <div className="grid grid-cols-1 gap-3">
               {suggestions.map((message, index) => (
                 <Button
                   key={index}
                   variant="outline"
                   onClick={() => handleMessageClick(message)}
-                  className="h-auto p-4 text-left justify-start rounded-xl border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 animate-fade-in-up"
-                  style={{ animationDelay: `${0.1 * index}s` }}
+                  className="w-full h-auto p-4 text-left justify-start rounded-xl border border-gray-200 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 break-words"
                 >
                   <div className="flex items-start gap-3 w-full">
                     <MessageCircle className="w-5 h-5 text-gray-500 dark:text-gray-400 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed">
+                    <span className="text-gray-700 dark:text-gray-300 text-sm leading-relaxed break-words">
                       {message}
                     </span>
                   </div>
@@ -218,27 +216,25 @@ export default function SendMessage() {
 
         <Separator className="my-8" />
 
-
         {repliedMessages.length > 0 && (
-          <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+          <div>
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
               Public Replies from @{username}
             </h2>
-            <div className="grid gap-4">
+            <div className="grid grid-cols-1 gap-4">
               {repliedMessages.map((message, index) => (
-                <Card 
+                <Card
                   key={(message as { _id: string })._id}
-                  className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover-lift animate-fade-in-up"
-                  style={{ animationDelay: `${0.1 * index}s` }}
+                  className="bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 hover-lift"
                 >
                   <CardHeader className="pb-3">
-                    <div className="text-gray-700 dark:text-gray-300 font-medium">
-                     &quot;{message.content}&quot;
+                    <div className="text-gray-700 dark:text-gray-300 font-medium break-words">
+                      &quot;{message.content}&quot;
                     </div>
                   </CardHeader>
                   <CardContent>
                     <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-xl border-l-4 border-green-500">
-                      <p className="text-green-800 dark:text-green-300 font-medium">
+                      <p className="text-green-800 dark:text-green-300 font-medium break-words">
                         💬 {message.reply}
                       </p>
                     </div>
@@ -248,11 +244,10 @@ export default function SendMessage() {
             </div>
           </div>
         )}
-      </div>
 
-        <Separator className="my-8" />
+        <Separator className="my-12" />
 
-           <div className="text-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-8 rounded-2xl mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        <div className="text-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-6 sm:p-8 rounded-2xl">
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
             Want Your Own Message Board?
           </h3>
@@ -260,13 +255,13 @@ export default function SendMessage() {
             Create your account and start receiving anonymous messages from your friends!
           </p>
           <Link href="/sign-up">
-            <Button className="h-12 px-8 bg-black hover:bg-gray-800 text-white rounded-xl transition-all duration-300 hover-lift flex items-center gap-2 mx-auto">
+            <Button className="h-12 px-8 bg-black hover:bg-gray-800 text-white rounded-xl transition-all duration-300 flex items-center gap-2 mx-auto">
               Create Your Account
               <ArrowRight className="w-4 h-4" />
             </Button>
           </Link>
         </div>
-
+      </div>
     </div>
   );
 }
