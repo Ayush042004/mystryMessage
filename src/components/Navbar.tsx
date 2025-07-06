@@ -17,7 +17,7 @@ function Navbar() {
             <div className="container mx-auto px-4 md:px-6 py-4">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-4">
                     <Link href="/" className="text-2xl font-bold text-gray-900 dark:text-white hover:text-gray-700 dark:hover:text-gray-300 transition-colors">
-                        True Feedback
+                        Mystry Message
                     </Link>
                     
                     {session ? (

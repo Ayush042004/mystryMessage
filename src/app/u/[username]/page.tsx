@@ -218,21 +218,6 @@ export default function SendMessage() {
 
         <Separator className="my-8" />
 
-        <div className="text-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-8 rounded-2xl mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            Want Your Own Message Board?
-          </h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
-            Create your account and start receiving anonymous messages from your friends!
-          </p>
-          <Link href="/sign-up">
-            <Button className="h-12 px-8 bg-black hover:bg-gray-800 text-white rounded-xl transition-all duration-300 hover-lift flex items-center gap-2 mx-auto">
-              Create Your Account
-              <ArrowRight className="w-4 h-4" />
-            </Button>
-          </Link>
-        </div>
-
 
         {repliedMessages.length > 0 && (
           <div className="animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
@@ -264,6 +249,24 @@ export default function SendMessage() {
           </div>
         )}
       </div>
+
+        <Separator className="my-8" />
+
+           <div className="text-center bg-gradient-to-r from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 p-8 rounded-2xl mb-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+            Want Your Own Message Board?
+          </h3>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            Create your account and start receiving anonymous messages from your friends!
+          </p>
+          <Link href="/sign-up">
+            <Button className="h-12 px-8 bg-black hover:bg-gray-800 text-white rounded-xl transition-all duration-300 hover-lift flex items-center gap-2 mx-auto">
+              Create Your Account
+              <ArrowRight className="w-4 h-4" />
+            </Button>
+          </Link>
+        </div>
+
     </div>
   );
 }
