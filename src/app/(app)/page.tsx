@@ -15,12 +15,14 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
+import { AuroraBackground } from '@/components/ui/aurora-background';
 
 export default function Home() {
   return (
     <>
- 
-      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 bg-gradient-to-br from-gray-500 via-white to-gray-800 dark:from-gray-900 dark:via-black dark:to-gray-800 min-h-screen">
+    <AuroraBackground>
+      <main className="flex-grow flex flex-col items-center justify-center px-4 md:px-24 py-12 min-h-screen">
+        
         <section className="text-center mb-12 md:mb-16 animate-fade-in-up">
           <div className="mb-6">
             <span className="inline-flex items-center px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 text-sm font-medium mb-6 animate-scale-in border-4 border-gray-400">
@@ -118,8 +120,10 @@ export default function Home() {
 </Carousel>
 
         </section>
+       
       </main>
 
+</AuroraBackground>
 
       <footer className="bg-gray-900 dark:bg-black text-white border-t border-gray-800">
         <div className="container mx-auto px-4 py-8">
